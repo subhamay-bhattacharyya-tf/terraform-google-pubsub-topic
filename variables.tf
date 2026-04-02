@@ -1,62 +1,41 @@
 # ============================================================================
-# GCS Bucket - Variables
+# Google Pub/Sub Topic Module - Variables
 # ============================================================================
 
-variable "bucket_name" {
-  description = "Name of the GCS bucket."
+variable "environment" {
+  description = "Deployment environment. One of: devl, test, prod."
   type        = string
+
+  validation {
+    condition     = contains(["devl", "test", "prod"], var.environment)
+    error_message = "environment must be one of: devl, test, prod."
+  }
 }
 
-variable "project_id" {
-  description = "GCP project ID."
+variable "project_code" {
+  description = "Short identifier used in resource naming for governance and cost attribution."
   type        = string
-  default     = "portfolio-site"
+
+  validation {
+    condition     = length(var.project_code) > 0
+    error_message = "project_code must not be empty."
+  }
 }
 
 variable "region" {
-  description = "GCP region."
+  description = "GCP region where the Pub/Sub topic will be created."
   type        = string
   default     = "us-central1"
 }
 
-variable "location" {
-  description = "GCS bucket location."
-  type        = string
-  default     = "US"
-}
+variable "pubsub_config" {
+  description = "Configuration object for the Google Pub/Sub topic."
+  type = object({
+    base_name = string
+  })
 
-variable "storage_class" {
-  description = "Storage class for the bucket."
-  type        = string
-  default     = "STANDARD"
-}
-
-variable "force_destroy" {
-  description = "Whether to force-destroy the bucket on Terraform destroy."
-  type        = bool
-  default     = false
-}
-
-variable "versioning" {
-  description = "Whether to enable object versioning."
-  type        = bool
-  default     = false
-}
-
-variable "labels" {
-  description = "Additional labels to apply to the bucket."
-  type        = map(string)
-  default     = {}
-}
-
-variable "project" {
-  description = "Project label value."
-  type        = string
-  default     = "portfolio-site"
-}
-
-variable "environment" {
-  description = "Environment label value."
-  type        = string
-  default     = "dev"
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9][a-zA-Z0-9-]{0,29}$", var.pubsub_config.base_name))
+    error_message = "base_name must be alphanumeric or dashes, start with a letter or digit, and be at most 30 characters."
+  }
 }
