@@ -8,7 +8,7 @@ Terraform module that provisions a single Google Pub/Sub Topic on GCP.
 
 ## Overview
 
-This module creates a production-ready Google Pub/Sub topic following a standardised naming convention and label schema. The topic name is derived automatically from the `project_code`, `base_name`, `region`, and `environment` inputs, ensuring consistent governance across deployments. A single structured `pubsub_config` object is the only resource-specific input, keeping the calling module interface minimal and predictable.
+This module creates a production-ready Google Pub/Sub topic following a standardised naming convention and label schema. The topic name is derived automatically from the `project_code`, `base_name`, `location`, and `environment` inputs, ensuring consistent governance across deployments. A single structured `pubsub_config` object is the only resource-specific input, keeping the calling module interface minimal and predictable.
 
 ---
 
@@ -25,6 +25,7 @@ module "pubsub_topic" {
 
   pubsub_config = {
     base_name = "orders"
+    location  = "us-central1"
   }
 }
 ```
@@ -48,14 +49,15 @@ module "pubsub_topic" {
 |------|-------------|------|---------|:--------:|
 | environment | Deployment environment. One of: devl, test, prod. | `string` | n/a | **yes** |
 | project\_code | Short identifier used in resource naming for governance and cost attribution. | `string` | n/a | **yes** |
-| pubsub\_config | Configuration object for the Google Pub/Sub topic. | `object({ base_name = string })` | n/a | **yes** |
+| pubsub\_config | Configuration object for the Google Pub/Sub topic. | `object({ base_name = string, location = optional(string, "us-central1") })` | n/a | **yes** |
 | region | GCP region where the Pub/Sub topic will be created. | `string` | `"us-central1"` | no |
 
 ### `pubsub_config` attributes
 
-| Attribute | Type | Required | Validation |
-|-----------|------|:--------:|------------|
-| base\_name | `string` | **yes** | Alphanumeric or dashes, starts with letter/digit, max 30 characters |
+| Attribute | Type | Required | Default | Validation |
+|-----------|------|:--------:|---------|------------|
+| base\_name | `string` | **yes** | — | Alphanumeric or dashes, starts with letter/digit, max 30 characters |
+| location | `string` | no | `"us-central1"` | Must not be empty; GCP region for message storage policy |
 
 ---
 
@@ -93,7 +95,7 @@ module "pubsub_topic" {
 
 > **Destructive operation:** Destroying this module will permanently delete the Pub/Sub topic. Any associated subscriptions must be removed separately before destroy.
 
-- The topic name is computed as `<project_code>-<base_name>-<region>-<environment>` and cannot be overridden directly.
+- The topic name is computed as `<project_code>-<base_name>-<location>-<environment>` and cannot be overridden directly.
 - The `environment` variable is strictly validated to `devl`, `test`, or `prod`.
 - GCP label values must be lowercase; ensure `project_code` and `environment` values conform.
 

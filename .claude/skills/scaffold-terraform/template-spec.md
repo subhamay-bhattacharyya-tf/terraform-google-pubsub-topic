@@ -31,6 +31,7 @@ Use the `tf-mod-vars` skill to author this file. Apply the GCP provider referenc
 | Attribute | Type | Required | Default | Validation |
 | --- | --- | --- | --- | --- |
 | `base_name` | `string` | Yes | — | Alphanumeric or dashes, max length ≤ 30 |
+| `location` | `string` | No | `us-central1` | Location where messages are physically stored |
 
 **outputs.tf:**
 

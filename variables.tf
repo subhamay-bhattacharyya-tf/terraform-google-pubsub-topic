@@ -32,10 +32,16 @@ variable "pubsub_config" {
   description = "Configuration object for the Google Pub/Sub topic."
   type = object({
     base_name = string
+    location  = optional(string, "us-central1")
   })
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9][a-zA-Z0-9-]{0,29}$", var.pubsub_config.base_name))
     error_message = "base_name must be alphanumeric or dashes, start with a letter or digit, and be at most 30 characters."
+  }
+
+  validation {
+    condition     = length(var.pubsub_config.location) > 0
+    error_message = "pubsub_config.location must not be empty."
   }
 }

@@ -5,18 +5,18 @@ on:
   push:
     branches:
       - 'main'
-      # - 'feature/**'
-      # - 'bug/**'
-    # paths:
-    #   - '*.tf'
-    #   - 'examples/**'
-    #   - 'test/**'
+      - 'feature/**'
+      - 'bug/**'
+    paths:
+      - '*.tf'
+      - 'examples/**'
+      - 'test/**'
   pull_request:
     branches: [main]
-    # paths:
-    #   - '*.tf'
-    #   - 'examples/**'
-    #   - 'test/**'
+    paths:
+      - '*.tf'
+      - 'examples/**'
+      - 'test/**'
   workflow_dispatch:
 
 permissions:

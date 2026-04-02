@@ -7,5 +7,6 @@ module "pubsub_topic" {
 
   pubsub_config = {
     base_name = var.base_name
+    location  = var.location
   }
 }
