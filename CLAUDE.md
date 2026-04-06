@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this module does
 
-This is a **Terraform module** that creates and manages a single `google_storage_bucket` resource on GCP. The entire public interface is one input variable (`pubsub_config`) and eight outputs (id, name, project, location, url, self_link, storage_class, force_destroy). This will be used as a GitHub Repository Template. The actual modules with me implemented seperately.
+This is a **Terraform module** that creates and manages a single `google_pubsub_topic` resource on GCP. The entire public interface is one input variable (`pubsub_config`) and eight outputs (id, name, project, location, url, self_link, storage_class, force_destroy). This will be used as a GitHub Repository Template. The actual modules with me implemented seperately.
 
 ## Common commands
 
@@ -34,7 +34,7 @@ pre-commit run --all-files
 
 ```text
 .                      # Root module — the publishable Terraform module
-├── main.tf            # Single google_storage_bucket resource
+├── main.tf            # Single google_pubsub_topic resource
 ├── variables.tf       # pubsub_config object variable with all validations
 ├── outputs.tf         # Eight bucket attribute outputs
 ├── versions.tf        # Terraform >= 1.3.0, google provider >= 7.23.0
